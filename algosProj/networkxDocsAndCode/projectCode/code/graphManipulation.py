@@ -17,7 +17,12 @@ def internaNodes(k, graph):
 def selectTargets(graph, noOfTargets):
     np.random.seed(10)
     nodes = graph.nodes()
-    return [np.random.choice(nodes) for i in range(noOfTargets)]
+    targetNodes = []
+    while len(targetNodes) < noOfTargets:
+        node = np.random.choice(nodes) 
+        if node not in targetNodes:
+            targetNodes.append(node)
+    return targetNodes
 
 def fakeNodesExternalDegrees(graph, fakeNodes, d0, d1):
     externalDergrees = {}
@@ -25,19 +30,39 @@ def fakeNodesExternalDegrees(graph, fakeNodes, d0, d1):
         externalDergrees[node] = np.random.randint(d0, d1)
     return externalDergrees
 
+def connectFakeNodesToTargetNodes(graph, fakeNodes, targetNodes, c):
+    fakeAndTargetNodeEdges = {}
+    for fakeNode in fakeNodes:
+        count = 0
+        fakeAndTargetNodeEdges[fakeNode] = []
+        while(count < c):
+            selectedTargetNode = np.random.choice(targetNodes)
+            if selectedTargetNode not in fakeAndTargetNodeEdges[fakeNode]:
+                graph.add_edge(fakeNode,selectedTargetNode)
+                count += 1
+                fakeAndTargetNodeEdges[fakeNode].append(selectedTargetNode)
+    return [graph, fakeAndTargetNodeEdges]
+
 def appendFakeNodesToOrigianlNodes(graph, fakeNodes, targetNodes, externalDergrees, c):
-    x = 0
+    # print(len(graph.edges()))
+    # x = 0
     nodes = graph.nodes()
     externalDegreeEdges ={}
     for fakeNode in fakeNodes:
         externalDegreeEdges[fakeNode] = []
-        x += externalDergrees[fakeNode]
+        # x += externalDergrees[fakeNode]
         for externalEdge in range(externalDergrees[fakeNode]):
             while(1):
                 externalNode = np.random.choice(nodes)
-                if externalNode not in targetNodes and externalNode not in targetNodes:
+                if (externalNode not in targetNodes) and (externalNode not in fakeNodes) and (externalNode not in externalDegreeEdges[fakeNode]):
                     graph.add_edge(fakeNode,externalNode)
                     externalDegreeEdges[fakeNode].append(externalNode)
                     break
-    print(len(graph.edges()))
-    return graph
+    # print(x)
+    # print(len(graph.edges()))
+    # print(externalDergrees)
+    # print(externalDegreeEdges)
+    
+    [graph, fakeAndTargetNodeEdges] =  connectFakeNodesToTargetNodes(graph, fakeNodes, targetNodes, c)
+
+    return [graph, externalDegreeEdges, fakeAndTargetNodeEdges]
