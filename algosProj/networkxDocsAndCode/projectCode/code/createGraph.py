@@ -1,21 +1,11 @@
 import networkx as nx
 import random
 
-def createFakeNodesGraphWithInternalNodes(k, externalDergrees, graph):
-    fakeNodeGraph = nx.Graph()
-    nodes = graph.nodes()
-    maxNodeNum = max(nodes)
-    nodesTheFakeMutsConnectWithin = {}
-    
-    for node in range(k):
-        nodesTheFakeMutsConnectWithin[maxNodeNum + node + 2] = []
-    for node1 in nodesTheFakeMutsConnectWithin:
-        for node2 in nodesTheFakeMutsConnectWithin:
-            if node1 != node2:
-                if random.randint(0,1) == 1:
-                    nodesTheFakeMutsConnectWithin[node1].append(node2)
-
-    return fakeNodeGraph
+def addFakeNodesToGraphAndIntenalDergrees(graph, InteralDegreesAndNodes):
+    for node in InteralDegreesAndNodes:
+        for connectingNode in InteralDegreesAndNodes[node]:
+            graph.add_edge(node, connectingNode)
+    return graph
 
 def createGraphWithEdgesInPath(dataPath):
     graph = nx.Graph()
