@@ -1,11 +1,13 @@
 import networkx as nx
 import random
 
-def addFakeNodesToGraphAndIntenalDergrees(graph, InteralDegreesAndNodes):
-    for node in InteralDegreesAndNodes:
-        for connectingNode in InteralDegreesAndNodes[node]:
+def addFakeNodesToGraphAndIntenalDergrees(graph, InteralDegreesAndNodes, fakeNodes):
+    for node in fakeNodes:
+        for connectingNode in InteralDegreesAndNodes[fakeNodes.index(node)]:
             graph.add_edge(node, connectingNode)
-    return graph
+            if(node not in InteralDegreesAndNodes[fakeNodes.index(connectingNode)]):
+                InteralDegreesAndNodes[fakeNodes.index(connectingNode)].append(node)
+    return [graph, InteralDegreesAndNodes]
 
 def createGraphWithEdgesInPath(dataPath):
     graph = nx.Graph()
