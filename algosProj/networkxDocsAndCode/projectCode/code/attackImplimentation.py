@@ -19,51 +19,47 @@ def prepareGraph():
     [graph, fakeNodesExternalDegrees, fakeAndTargetNodeEdges] = manipulate.appendFakeNodesToOrigianlNodes(graph, fakeNodes, targetNodes, externalDergrees, c) # graph, array of arrays, array of arrays
     return [graph, fakeNodesExternalDegrees, targetNodes, fakeNodesInteralDegrees, fakeNodes, fakeAndTargetNodeEdges]
 
-def recovery(finalGraph,fakeNodesExternalDegrees,fakeNodesInteralDegrees, fakeAndTargetNodeEdges, c, totalDegree):
+def recovery(finalGraph,fakeNodesExternalDegrees,fakeNodesInteralDegrees, fakeAndTargetNodeEdges, c, totalDegrees):
     print("Recovery Process started")
-    startDegree = totalDegree[0]
-    print(startDegree)
+    startDegree = totalDegrees[0]
     nodesWithRequiredDegree = recover.getNodesWithDegree(startDegree, finalGraph)
-    print(nodesWithRequiredDegree)
-    return finalGraph
+    startNodeWithDegrees = recover.retreiveSubGraphs(nodesWithRequiredDegree, finalGraph, totalDegrees)
+    print("start node", str(startNodeWithDegrees))
+    return len(startNodeWithDegrees)
 
-def verifyRcoverdSubGraph(recoveredSubGraph, fakeNodes, targetNodes):
-    print("verifying if the expected sub graph is recovered")
-    return
-
-def calculateTotalDegree(fakeNodesExternalDegrees, fakeNodesInteralDegrees, c, fakeNodes):
-    totalDegree =[]
+def calculatetotalDegrees(fakeNodesExternalDegrees, fakeNodesInteralDegrees, c, fakeNodes):
+    totalDegrees =[]
     for node in fakeNodes:
         index = fakeNodes.index(node)
-        totalDegree.append(c + len(fakeNodesExternalDegrees[index]) + len(fakeNodesInteralDegrees[index]))
-    return totalDegree
+        totalDegrees.append(c + len(fakeNodesExternalDegrees[index]) + len(fakeNodesInteralDegrees[index]))
+    return totalDegrees
 
 [finalGraph, fakeNodesExternalDegrees, targetNodes, fakeNodesInteralDegrees, fakeNodes, fakeAndTargetNodeEdges] = prepareGraph()
-totalDegree = calculateTotalDegree(fakeNodesExternalDegrees, fakeNodesInteralDegrees, c, fakeNodes)
-# print("Final Edges:")
-# print(finalGraph.edges())
-# print("------------------------------------------------------------------------------------------------------------")
-# print("Final Nodes:")
-# print(finalGraph.nodes())
-# print("------------------------------------------------------------------------------------------------------------")
-# print("fakeNodesExternalDegrees:")
-# print(fakeNodesExternalDegrees)
-# print("------------------------------------------------------------------------------------------------------------")
-# print("targetNodes:")
-# print(targetNodes)
-# print("------------------------------------------------------------------------------------------------------------")
-# print("fakeNodesInteralDegrees:")
-# print(fakeNodesInteralDegrees)
-# print("------------------------------------------------------------------------------------------------------------")
+totalDegrees = calculatetotalDegrees(fakeNodesExternalDegrees, fakeNodesInteralDegrees, c, fakeNodes)
+
+print("Final Edges:")
+print(finalGraph.edges())
+print("------------------------------------------------------------------------------------------------------------")
+print("Final Nodes:")
+print(finalGraph.nodes())
+print("------------------------------------------------------------------------------------------------------------")
+print("fakeNodesExternalDegrees:")
+print(fakeNodesExternalDegrees)
+print("------------------------------------------------------------------------------------------------------------")
+print("targetNodes:")
+print(targetNodes)
+print("------------------------------------------------------------------------------------------------------------")
+print("fakeNodesInteralDegrees:")
+print(fakeNodesInteralDegrees)
+print("------------------------------------------------------------------------------------------------------------")
 print("fakeNodes:")
 print(fakeNodes)
 print("------------------------------------------------------------------------------------------------------------")
 print("total degree")
-print(totalDegree)
-# print("------------------------------------------------------------------------------------------------------------")
-# print("fakeAndTargetNodeEdges:")
-# print(fakeAndTargetNodeEdges)
-# print("------------------------------------------------------------------------------------------------------------")
+print(totalDegrees)
+print("------------------------------------------------------------------------------------------------------------")
+print("fakeAndTargetNodeEdges:")
+print(fakeAndTargetNodeEdges)
+print("------------------------------------------------------------------------------------------------------------")
 
-recoveredSubGraph = recovery(finalGraph,fakeNodesExternalDegrees,fakeNodesInteralDegrees, fakeAndTargetNodeEdges, c, totalDegree)
-# verifyRcoverdSubGraph(recoveredSubGraph, fakeNodes, targetNodes)
+startNodeWithDegrees = recovery(finalGraph,fakeNodesExternalDegrees,fakeNodesInteralDegrees, fakeAndTargetNodeEdges, c, totalDegrees)
