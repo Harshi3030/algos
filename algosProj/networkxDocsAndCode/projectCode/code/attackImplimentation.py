@@ -11,7 +11,7 @@ c = 3
 
 def prepareGraph():
     print("preparing the graph for attack")
-    graph = create.createGraphWithEdgesInPath("../data/edges.edges") #graph
+    graph = create.createGraphWithEdgesInPath("../data/huge.edges") #graph
     targetNodes = manipulate.selectTargets(graph, w) #array
     [fakeNodes, fakeNodesInteralDegrees] = manipulate.internaNodes(k, graph) #array , array of arrays
     externalDergrees = manipulate.fakeNodesExternalDegrees(graph, fakeNodes, d0, d1) #dict
@@ -23,9 +23,17 @@ def recovery(finalGraph,fakeNodesExternalDegrees,fakeNodesInteralDegrees, fakeAn
     print("Recovery Process started")
     startDegree = totalDegrees[0]
     nodesWithRequiredDegree = recover.getNodesWithDegree(startDegree, finalGraph)
-    startNodeWithDegrees = recover.retreiveSubGraphs(nodesWithRequiredDegree, finalGraph, totalDegrees)
+    [startNodeWithDegrees, paths] = recover.retreiveSubGraphs(nodesWithRequiredDegree, finalGraph, totalDegrees)
+    print("paths")
+    print(paths)
+    print("------------------------------------------------------------------------------------------------------------")
     print("start node", str(startNodeWithDegrees))
-    return len(startNodeWithDegrees)
+    print("------------------------------------------------------------------------------------------------------------")
+    if(len(startNodeWithDegrees) > 1):
+        finalPaths = recover.lookForInternalStructure(finalGraph, startNodeWithDegrees, fakeNodesInteralDegrees, paths)
+    else:
+        finalPaths = paths
+    return finalPaths
 
 def calculatetotalDegrees(fakeNodesExternalDegrees, fakeNodesInteralDegrees, c, fakeNodes):
     totalDegrees =[]
@@ -37,12 +45,12 @@ def calculatetotalDegrees(fakeNodesExternalDegrees, fakeNodesInteralDegrees, c, 
 [finalGraph, fakeNodesExternalDegrees, targetNodes, fakeNodesInteralDegrees, fakeNodes, fakeAndTargetNodeEdges] = prepareGraph()
 totalDegrees = calculatetotalDegrees(fakeNodesExternalDegrees, fakeNodesInteralDegrees, c, fakeNodes)
 
-print("Final Edges:")
-print(finalGraph.edges())
-print("------------------------------------------------------------------------------------------------------------")
-print("Final Nodes:")
-print(finalGraph.nodes())
-print("------------------------------------------------------------------------------------------------------------")
+# print("Final Edges:")
+# print(finalGraph.edges())
+# print("------------------------------------------------------------------------------------------------------------")
+# print("Final Nodes:")
+# print(finalGraph.nodes())
+# print("------------------------------------------------------------------------------------------------------------")
 print("fakeNodesExternalDegrees:")
 print(fakeNodesExternalDegrees)
 print("------------------------------------------------------------------------------------------------------------")
@@ -60,6 +68,15 @@ print(totalDegrees)
 print("------------------------------------------------------------------------------------------------------------")
 print("fakeAndTargetNodeEdges:")
 print(fakeAndTargetNodeEdges)
-print("------------------------------------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------------------------\n\n\n\n")
 
-startNodeWithDegrees = recovery(finalGraph,fakeNodesExternalDegrees,fakeNodesInteralDegrees, fakeAndTargetNodeEdges, c, totalDegrees)
+subGraphNode = recovery(finalGraph,fakeNodesExternalDegrees,fakeNodesInteralDegrees, fakeAndTargetNodeEdges, c, totalDegrees)
+print(subGraphNode)
+print(fakeNodes)
+
+print("\n\n\n**************")
+if len(subGraphNode) == 1:
+    print("verifying graph")
+    print(sorted(subGraphNode[0]) == sorted(fakeNodes))
+else:
+    print("multiple graphs")
