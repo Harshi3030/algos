@@ -21,6 +21,13 @@ def internaNodes(k, graph):
             InteralDegreesAndNodes[currIndex].append(fakeNodes[currIndex -1 ])
     return [fakeNodes, InteralDegreesAndNodes]
 
+def removeEdgesForPrevention(finalGraph, percentageOfRemoval):
+    removedEdgesGraph = nx.Graph()
+    for u,v,w in finalGraph.edges(data=True):
+        if random.randint(1, int(100/percentageOfRemoval)) != 1 :
+            removedEdgesGraph.add_edge(u, v)
+    return removedEdgesGraph
+
 def selectTargets(graph, noOfTargets):
     np.random.seed(10)
     nodes = graph.nodes()

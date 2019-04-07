@@ -18,7 +18,7 @@ def getNeighborsrequiredDegree(startNode, graph, degree):
 def interDegreeOfNode(graph, node, path):
     degree = 0
     neighbors = list(graph.neighbors(node))
-    print(neighbors)
+    # print(neighbors)
     for neighbor in neighbors:
         if neighbor in path:
             degree += 1
@@ -27,12 +27,12 @@ def interDegreeOfNode(graph, node, path):
 def IsMatchingInternalStructure(graph, path, fakeNodesInteralDegrees):
     index = 0
     while index < len(fakeNodesInteralDegrees):
-        print("fakeNodesInteralDegrees")
-        print(fakeNodesInteralDegrees[index])
-        print("fakeNodesInteralDegrees len")
-        print(len(fakeNodesInteralDegrees[index]))
-        print("interDegreeOfNode")
-        print(interDegreeOfNode(graph, path[index], path))
+        # print("fakeNodesInteralDegrees")
+        # print(fakeNodesInteralDegrees[index])
+        # print("fakeNodesInteralDegrees len")
+        # print(len(fakeNodesInteralDegrees[index]))
+        # print("interDegreeOfNode")
+        # print(interDegreeOfNode(graph, path[index], path))
         if len(fakeNodesInteralDegrees[index]) != interDegreeOfNode(graph, path[index], path):
             return False
         index += 1
@@ -43,7 +43,7 @@ def lookForInternalStructure(finalGraph, startNodeWithDegrees, fakeNodesInteralD
     for path in paths:
         if IsMatchingInternalStructure(finalGraph, path, fakeNodesInteralDegrees):
             finalPaths.append(path)
-        print("===========")
+        # print("===========")
     return finalPaths
 
 def isRequiredSubGraph(startNode, graph, totalDegrees, currDegreeIndex, path, pathDegree):
@@ -66,14 +66,14 @@ def isRequiredSubGraph(startNode, graph, totalDegrees, currDegreeIndex, path, pa
 def retreiveSubGraphs(nodesWithRequiredDegree, graph, totalDegrees):
     startNodeWithDegrees = []
     paths = []
-    print(nodesWithRequiredDegree)
+    # print(nodesWithRequiredDegree)
     for startNode in nodesWithRequiredDegree:
         path = []
         pathDegree = []
         if(isRequiredSubGraph(startNode, graph, totalDegrees, 1, path, pathDegree)):
             startNodeWithDegrees.append(startNode)
             paths.append(path)
-            print(path)
-            print(pathDegree)
-        print("------")
+        #     print(path)
+        #     print(pathDegree)
+        # print("------")
     return [startNodeWithDegrees, paths]
