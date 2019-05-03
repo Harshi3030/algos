@@ -12,8 +12,8 @@ def prepareGraph():
     [fakeNodes, fakeNodesInteralDegrees] = manipulate.internaNodes(k, graph) #array , array of arrays
     externalDergrees = manipulate.fakeNodesExternalDegrees(graph, fakeNodes, d0, d1) #dict
     [graph, fakeNodesInteralDegrees] = create.addFakeNodesToGraphAndIntenalDergrees(graph, fakeNodesInteralDegrees, fakeNodes) # graph, array of arrays
-    [graph, fakeNodesExternalDegrees, fakeAndTargetNodeEdges] = manipulate.appendFakeNodesToOrigianlNodes(graph, fakeNodes, targetNodes, externalDergrees, c) # graph, array of arrays, array of arrays
-    return [graph, fakeNodesExternalDegrees, targetNodes, fakeNodesInteralDegrees, fakeNodes, fakeAndTargetNodeEdges]
+    [graph, fakeNodesExternalDegrees, fakeAndTargetNodeEdges, cDict] = manipulate.appendFakeNodesToOrigianlNodes(graph, fakeNodes, targetNodes, externalDergrees, c) # graph, array of arrays, array of arrays
+    return [graph, fakeNodesExternalDegrees, targetNodes, fakeNodesInteralDegrees, fakeNodes, fakeAndTargetNodeEdges, cDict]
 
 def recovery(finalGraph,fakeNodesExternalDegrees,fakeNodesInteralDegrees, fakeAndTargetNodeEdges, c, totalDegrees):
     print("Recovery Process started")
@@ -38,8 +38,8 @@ d0 = 5
 d1 = 10
 c = 3
 [isPreventionImplimentation, percentageOfRemoval] = details.implentailDetails()
-[finalGraph, fakeNodesExternalDegrees, targetNodes, fakeNodesInteralDegrees, fakeNodes, fakeAndTargetNodeEdges] = prepareGraph()
-totalDegrees = details.calculatetotalDegrees(fakeNodesExternalDegrees, fakeNodesInteralDegrees, c, fakeNodes)
+[finalGraph, fakeNodesExternalDegrees, targetNodes, fakeNodesInteralDegrees, fakeNodes, fakeAndTargetNodeEdges, cDict] = prepareGraph()
+totalDegrees = details.calculatetotalDegrees(fakeNodesExternalDegrees, fakeNodesInteralDegrees, c, fakeNodes, cDict)
 details.printInputs(isPreventionImplimentation, percentageOfRemoval, k, w, d0, d1, c)
 # details.printGraphDetails(finalGraph, fakeNodesExternalDegrees, fakeNodesInteralDegrees, fakeNodes, totalDegrees, fakeAndTargetNodeEdges, targetNodes)
 if isPreventionImplimentation:

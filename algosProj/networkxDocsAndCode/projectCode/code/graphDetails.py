@@ -22,11 +22,14 @@ def implentailDetails():
         exit()
     return [implimentationType==2, percentage]
 
-def calculatetotalDegrees(fakeNodesExternalDegrees, fakeNodesInteralDegrees, c, fakeNodes):
+def calculatetotalDegrees(fakeNodesExternalDegrees, fakeNodesInteralDegrees, c, fakeNodes, cDict):
     totalDegrees =[]
     for node in fakeNodes:
         index = fakeNodes.index(node)
-        totalDegrees.append(c + len(fakeNodesExternalDegrees[index]) + len(fakeNodesInteralDegrees[index]))
+        if cDict == {}:
+            totalDegrees.append(c + len(fakeNodesExternalDegrees[index]) + len(fakeNodesInteralDegrees[index]))
+        else:
+            totalDegrees.append(cDict[node] + len(fakeNodesExternalDegrees[index]) + len(fakeNodesInteralDegrees[index]))
     return totalDegrees
 
 def printGraphDetails(finalGraph, fakeNodesExternalDegrees, fakeNodesInteralDegrees, fakeNodes, totalDegrees, fakeAndTargetNodeEdges, targetNodes):
