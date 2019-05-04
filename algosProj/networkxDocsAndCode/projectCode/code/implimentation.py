@@ -7,7 +7,10 @@ import random
 
 def prepareGraph():
     print("preparing the graph for attack")
-    graph = create.createGraphWithEdgesInPath("../data/huge.edges") #graph
+    # graph = create.createGraphWithEdgesInPath("../data/huge.edges") #facebook graph
+    # graph = create.createGraphWithEdgesInPath("../data/Email-Enron.txt") #email graph
+    graph = create.createGraphWithEdgesInPath("../data/twitter.edges") #twitter graph
+    # graph = create.createGraphWithEdgesInPath("../data/Amazon.txt") #Amazon graph
     targetNodes = manipulate.selectTargets(graph, w) #array
     [fakeNodes, fakeNodesInteralDegrees] = manipulate.internaNodes(k, graph) #array , array of arrays
     externalDergrees = manipulate.fakeNodesExternalDegrees(graph, fakeNodes, d0, d1) #dict
@@ -32,7 +35,7 @@ def recovery(finalGraph,fakeNodesExternalDegrees,fakeNodesInteralDegrees, fakeAn
     return finalPaths
 
 #########################################################################################################
-k = 10 # k = no new fake accounts
+k = 40 # k = no new fake accounts
 w = 10 # w = no of targets
 d0 = 5
 d1 = 10
@@ -41,7 +44,7 @@ c = 3
 [finalGraph, fakeNodesExternalDegrees, targetNodes, fakeNodesInteralDegrees, fakeNodes, fakeAndTargetNodeEdges, cDict] = prepareGraph()
 totalDegrees = details.calculatetotalDegrees(fakeNodesExternalDegrees, fakeNodesInteralDegrees, c, fakeNodes, cDict)
 details.printInputs(isPreventionImplimentation, percentageOfRemoval, k, w, d0, d1, c)
-# details.printGraphDetails(finalGraph, fakeNodesExternalDegrees, fakeNodesInteralDegrees, fakeNodes, totalDegrees, fakeAndTargetNodeEdges, targetNodes)
+details.printGraphDetails(finalGraph, fakeNodesExternalDegrees, fakeNodesInteralDegrees, fakeNodes, totalDegrees, fakeAndTargetNodeEdges, targetNodes)
 if isPreventionImplimentation:
     finalGraph = manipulate.removeEdgesForPrevention(finalGraph, percentageOfRemoval)
 finalPaths = recovery(finalGraph,fakeNodesExternalDegrees,fakeNodesInteralDegrees, fakeAndTargetNodeEdges, c, totalDegrees)
